@@ -4,6 +4,8 @@
 //! it is intended to provide a usable definition that can be used
 //! by external rendering programs themselves.
 
+#[macro_use]
 pub mod object;
+pub mod convert;
 pub mod raster;
 pub mod surface;
