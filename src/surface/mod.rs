@@ -33,4 +33,10 @@ impl Surface {
             objects
         }
     }
+
+    pub fn for_each<F>(&self, f: F)
+        where F: Fn(&Object)
+    {
+        self.objects.iter().for_each(f);
+    }
 }
