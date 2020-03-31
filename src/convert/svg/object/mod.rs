@@ -1,5 +1,6 @@
 
 use crate::object::*;
+use crate::object::text::Text;
 use crate::surface::{
     Object,
     Surface
@@ -31,6 +32,11 @@ fn rect(r: &shape::Rect) -> Rect
     }, r.width, r.height)
 }
 
+fn text(t: &shape::Text) -> Text
+{
+    Text::new((0, 0), &t.text)
+}
+
 pub fn svg(s: &Svg) -> Surface
 {
     let mut v = Vec::new();
@@ -48,6 +54,9 @@ pub fn svg(s: &Svg) -> Surface
                 },
                 Shape::Rect(r) => {
                     Object::Rect(rect(r))
+                },
+                Shape::Text(t) => {
+                    Object::Text(text(t))
                 }
             }
         );

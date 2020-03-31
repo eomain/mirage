@@ -6,6 +6,7 @@
 
 use std::collections::HashMap;
 use crate::object::*;
+use crate::object::text::Text;
 
 /// A position on the surface
 pub type Position = (usize, usize);
@@ -16,7 +17,8 @@ pub type Map<K, V> = HashMap<K, V>;
 pub enum Object {
     Point(Point),
     Line(Line),
-    Rect(Rect)
+    Rect(Rect),
+    Text(Text)
 }
 
 /// A surface contains a set of object

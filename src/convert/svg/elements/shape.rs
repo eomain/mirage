@@ -51,11 +51,30 @@ impl Rect {
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename = "text")]
+pub struct Text {
+    #[serde(rename = "$value", default)]
+    pub text: String
+}
+
+impl Text {
+    pub fn new<S>(s: S) -> Self
+        where S: Into<String>
+    {
+        Self {
+            text: s.into()
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum Shape {
     #[serde(rename = "line")]
     Line(Line),
     #[serde(rename = "rect")]
-    Rect(Rect)
+    Rect(Rect),
+    #[serde(rename = "text")]
+    Text(Text)
 }
 
 #[cfg(test)]
@@ -101,5 +120,15 @@ mod tests {
         "#;
         let s: Shape = from_str(&svg).unwrap();
         assert_eq!(s, Shape::Line(Line::new(5, 2, 12, 20)));
+    }
+
+    #[test]
+    fn text()
+    {
+        let svg = r#"
+            <text>hello world</text>
+        "#;
+        let t: Text = from_str(&svg).unwrap();
+        assert_eq!(t, Text::new("hello world"));
     }
 }
