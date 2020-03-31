@@ -80,6 +80,7 @@ impl<'a> IntoIterator for &'a Line {
 }
 
 /// Create a line from a sequence of points
+#[macro_use]
 #[macro_export]
 macro_rules! line {
     () => {
@@ -131,6 +132,14 @@ impl Rect {
             width,
             height
         }
+    }
+}
+
+impl<'a> From<&'a Rect> for (&'a Point, usize, usize)
+{
+    fn from(rect: &'a Rect) -> Self
+    {
+        (&rect.point, rect.width, rect.height)
     }
 }
 
