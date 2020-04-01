@@ -119,10 +119,12 @@ pub struct Line {
 }
 
 impl Line {
-    pub fn new() -> Self
+    pub fn new<P>(begin: P, mut path: Vec<Point>) -> Self
+        where P: Into<Point>
     {
+        path.insert(0, begin.into());
         Self {
-            points: Vec::new()
+            points: path
         }
     }
 }
@@ -152,6 +154,7 @@ impl Translate for Line {
 impl From<&[Point]> for Line {
     fn from(p: &[Point]) -> Self
     {
+        assert!(p.len() > 0);
         Self {
             points: p.to_vec()
         }
@@ -175,7 +178,7 @@ impl<'a> IntoIterator for &'a Line {
 #[macro_export]
 macro_rules! line {
     () => {
-        Line::new()
+        Line::new((0, 0), Vec::new())
     };
 
     ($x: expr) => {
