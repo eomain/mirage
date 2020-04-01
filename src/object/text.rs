@@ -1,5 +1,6 @@
 
 use super::Point;
+use super::Translate;
 
 /// A simple text object
 #[derive(Debug, Clone, PartialEq, Hash)]
@@ -18,6 +19,18 @@ impl Text {
             point: point.into(),
             text: text.into()
         }
+    }
+}
+
+impl Translate for Text {
+    fn point(&self) -> &Point
+    {
+        &self.point
+    }
+
+    fn point_mut(&mut self) -> &mut Point
+    {
+        &mut self.point
     }
 }
 
