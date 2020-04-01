@@ -24,7 +24,20 @@ pub trait Translate {
         None
     }
 
-    fn for_each<F>(&mut self, mut func: F)
+    fn for_each<F>(&self, func: F)
+        where F: Fn(& Point)
+    {
+        match self.points() {
+            None => {
+                func(self.point());
+            },
+            Some(points) => {
+                points.iter().for_each(|p| func(p));
+            }
+        }
+    }
+
+    fn for_each_mut<F>(&mut self, mut func: F)
         where F: FnMut(&mut Point)
     {
         match self.points_mut() {
@@ -45,7 +58,7 @@ pub trait Translate {
 
     fn translate(&mut self, pos: (isize, isize))
     {
-        self.for_each(|point| {
+        self.for_each_mut(|point| {
             point.x += pos.0;
             point.y += pos.1;
         });
