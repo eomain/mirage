@@ -6,6 +6,55 @@
 /// of graphical text
 pub mod text;
 
+/// Perform a translation on an Object
+/// by operating on their points
+pub trait Translate {
+
+    fn point(&self) -> &Point;
+
+    fn points(&self) -> Option<&[Point]>
+    {
+        None
+    }
+
+    fn point_mut(&mut self) -> &mut Point;
+
+    fn points_mut(&mut self) -> Option<&mut [Point]>
+    {
+        None
+    }
+
+    fn for_each<F>(&mut self, mut func: F)
+        where F: FnMut(&mut Point)
+    {
+        match self.points_mut() {
+            None => {
+                func(self.point_mut());
+            },
+            Some(points) => {
+                points.iter_mut().for_each(|p| func(p));
+            }
+        }
+    }
+
+    fn position(&mut self, pos: (isize, isize))
+    {
+        self.for_each(|point| {
+            point.x = pos.0;
+            point.y = pos.1;
+        });
+    }
+
+    fn translate(&mut self, pos: (isize, isize))
+    {
+        self.for_each(|point| {
+            point.x += pos.0;
+            point.y += pos.1;
+        });
+    }
+
+}
+
 /// A Point is a simple object that
 /// represents a single location
 #[derive(Debug, Copy, Clone, PartialEq, Hash)]
@@ -25,17 +74,26 @@ impl Point {
     }
 }
 
-impl From<(isize, isize)> for Point {
+impl Translate for Point {
+    fn point(&self) -> &Point
+    {
+        self
+    }
 
+    fn point_mut(&mut self) -> &mut Point
+    {
+        self
+    }
+}
+
+impl From<(isize, isize)> for Point {
     fn from(p: (isize, isize)) -> Self
     {
         Self::new(p.0, p.1)
     }
-
 }
 
 impl From<&Point> for (isize, isize) {
-
     fn from(p: &Point) -> Self
     {
         (p.x, p.y)
@@ -55,6 +113,28 @@ impl Line {
         Self {
             points: Vec::new()
         }
+    }
+}
+
+impl Translate for Line {
+    fn point(&self) -> &Point
+    {
+        &self.points[0]
+    }
+
+    fn point_mut(&mut self) -> &mut Point
+    {
+        &mut self.points[0]
+    }
+
+    fn points(&self) -> Option<&[Point]>
+    {
+        Some(self.points.as_slice())
+    }
+
+    fn points_mut(&mut self) -> Option<&mut [Point]>
+    {
+        Some(self.points.as_mut_slice())
     }
 }
 
@@ -132,6 +212,18 @@ impl Rect {
             width,
             height
         }
+    }
+}
+
+impl Translate for Rect {
+    fn point(&self) -> &Point
+    {
+        &self.point
+    }
+
+    fn point_mut(&mut self) -> &mut Point
+    {
+        &mut self.point
     }
 }
 
