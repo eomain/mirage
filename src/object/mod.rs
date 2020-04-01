@@ -56,6 +56,20 @@ pub trait Translate {
         self.translate((pos.0 - x, pos.1 - y));
     }
 
+    fn translate_x(&mut self, pos: isize)
+    {
+        self.for_each_mut(|point| {
+            point.x += pos;
+        });
+    }
+
+    fn translate_y(&mut self, pos: isize)
+    {
+        self.for_each_mut(|point| {
+            point.y += pos;
+        });
+    }
+
     fn translate(&mut self, pos: (isize, isize))
     {
         self.for_each_mut(|point| {
@@ -64,6 +78,34 @@ pub trait Translate {
         });
     }
 
+}
+
+pub trait Scale: Translate {
+    fn scale_x(&mut self, factor: f64)
+    {
+        self.for_each_mut(|point| {
+            let x = -(0.0 - point.x as f64);
+            point.x = (factor * x) as isize;
+        });
+    }
+
+    fn scale_y(&mut self, factor: f64)
+    {
+        self.for_each_mut(|point| {
+            let y = -(0.0 - point.y as f64);
+            point.y = (factor * y) as isize;
+        });
+    }
+
+    fn scale(&mut self, factor: f64)
+    {
+        self.for_each_mut(|point| {
+            let x = -(0.0 - point.x as f64);
+            let y = -(0.0 - point.y as f64);
+            point.x = (factor * x) as isize;
+            point.y = (factor * y) as isize;
+        });
+    }
 }
 
 /// A Point is a simple object that
@@ -96,6 +138,8 @@ impl Translate for Point {
         self
     }
 }
+
+impl Scale for Point {}
 
 impl From<(isize, isize)> for Point {
     fn from(p: (isize, isize)) -> Self
@@ -150,6 +194,8 @@ impl Translate for Line {
         Some(self.points.as_mut_slice())
     }
 }
+
+impl Scale for Line {}
 
 impl From<&[Point]> for Line {
     fn from(p: &[Point]) -> Self
@@ -241,6 +287,8 @@ impl Translate for Rect {
     }
 }
 
+impl Scale for Rect {}
+
 impl<'a> From<&'a Rect> for (&'a Point, usize, usize)
 {
     fn from(rect: &'a Rect) -> Self
@@ -257,9 +305,12 @@ mod tests {
     #[test]
     fn point()
     {
-        let p: Point = (2, 4).into();
+        let mut p: Point = (2, 4).into();
         assert_eq!(p.x, 2);
         assert_eq!(p.y, 4);
+        p.scale(3.5);
+        assert_eq!(p.x, 7);
+        assert_eq!(p.y, 14);
     }
 
     #[test]
