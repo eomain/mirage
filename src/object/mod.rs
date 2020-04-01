@@ -39,10 +39,8 @@ pub trait Translate {
 
     fn position(&mut self, pos: (isize, isize))
     {
-        self.for_each(|point| {
-            point.x = pos.0;
-            point.y = pos.1;
-        });
+        let (x, y) = self.point().into();
+        self.translate((pos.0 - x, pos.1 - y));
     }
 
     fn translate(&mut self, pos: (isize, isize))
@@ -251,7 +249,9 @@ mod tests {
     #[test]
     fn line()
     {
-        let l = line![(2, 1), (1, 1)];
+        let mut l = line![(2, 1), (1, 1), (5, 5)];
+        l.position((3, 4));
+        assert_eq!(l, line![(3, 4), (2, 4), (6, 8)]);
     }
 
     #[test]
