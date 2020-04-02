@@ -20,6 +20,10 @@ use serde_xml_rs::{
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename = "svg")]
 pub struct Svg {
+    #[serde(default)]
+    pub x: isize,
+    #[serde(default)]
+    pub y: isize,
     #[serde(rename = "$value", default)]
     pub shapes: Vec<Shape>
 }
