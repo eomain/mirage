@@ -47,6 +47,8 @@ pub fn svg(s: &Svg) -> Surface
             match s {
                 Shape::Line(l) => {
                     if l.x1 == l.x2 && l.y1 == l.y2 {
+                        continue;
+                    } else if (l.x1 - l.x2).abs() == 1 && (l.y1 - l.y2).abs() == 1 {
                         Object::Point(point(l))
                     } else {
                         Object::Line(line(l))
