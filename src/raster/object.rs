@@ -1,7 +1,12 @@
 
 use super::*;
 use crate::object::*;
-use crate::surface::Object;
+use crate::surface;
+use surface::{
+    Primitive,
+    Object
+};
+use Object::*;
 
 struct ScaleFactor {
     factor: f64
@@ -93,11 +98,14 @@ fn rect(r: &Rect) -> Vec<(usize, usize)>
 
 pub fn object(o: &Object) -> Vec<(usize, usize)>
 {
-    use Object::*;
+    use Primitive::*;
     match o {
-        Point(p) => vec![point(p)],
-        Line(l) => line(l),
-        Rect(r) => rect(r),
+        Primitive(p) => match p {
+            Point(p) => vec![point(p)],
+            Line(l) => line(l),
+            Rect(r) => rect(r),
+            _ => unimplemented!()
+        },
         _ => unimplemented!()
     }
 }

@@ -1,7 +1,8 @@
 
 use crate::object::*;
 use crate::object::text::Text;
-use crate::surface::{
+use crate::surface;
+use surface::{
     Object,
     Surface
 };
@@ -42,6 +43,9 @@ pub fn svg(s: &Svg) -> Surface
     let mut v = Vec::new();
 
     use shape::Shape;
+    use surface::Primitive::*;
+    use Object::*;
+
     for s in &s.shapes {
         v.push(
             match s {
@@ -49,16 +53,16 @@ pub fn svg(s: &Svg) -> Surface
                     if l.x1 == l.x2 && l.y1 == l.y2 {
                         continue;
                     } else if (l.x1 - l.x2).abs() == 1 && (l.y1 - l.y2).abs() == 1 {
-                        Object::Point(point(l))
+                        Primitive(Point(point(l)))
                     } else {
-                        Object::Line(line(l))
+                        Primitive(Line(line(l)))
                     }
                 },
                 Shape::Rect(r) => {
-                    Object::Rect(rect(r))
+                    Primitive(Rect(rect(r)))
                 },
                 Shape::Text(t) => {
-                    Object::Text(text(t))
+                    Primitive(Text(text(t)))
                 }
             }
         );
