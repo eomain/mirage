@@ -35,7 +35,7 @@ fn rect(r: &shape::Rect) -> Rect
 
 fn text(t: &shape::Text) -> Text
 {
-    Text::new((0, 0), &t.text)
+    Text::new((t.x, t.y), &t.text)
 }
 
 pub fn svg(s: &Svg) -> Surface

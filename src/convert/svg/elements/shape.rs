@@ -53,15 +53,20 @@ impl Rect {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename = "text")]
 pub struct Text {
+    #[serde(default)]
+    pub x: isize,
+    #[serde(default)]
+    pub y: isize,
     #[serde(rename = "$value", default)]
     pub text: String
 }
 
 impl Text {
-    pub fn new<S>(s: S) -> Self
+    pub fn new<S>(x: isize, y: isize, s: S) -> Self
         where S: Into<String>
     {
         Self {
+            x, y,
             text: s.into()
         }
     }
@@ -126,9 +131,9 @@ mod tests {
     fn text()
     {
         let svg = r#"
-            <text>hello world</text>
+            <text x="10" y="5">hello world</text>
         "#;
         let t: Text = from_str(&svg).unwrap();
-        assert_eq!(t, Text::new("hello world"));
+        assert_eq!(t, Text::new(10, 5, "hello world"));
     }
 }
