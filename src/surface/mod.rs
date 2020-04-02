@@ -11,20 +11,31 @@ use crate::object::text::Text;
 /// A position on the surface
 pub type Position = (usize, usize);
 
+/// The type of position
+#[derive(Debug, Clone, PartialEq, Hash)]
+pub enum PositionType {
+    /// The absolute position
+    Abs,
+    /// The relative position
+    Rel
+}
+
 pub type Map<K, V> = HashMap<K, V>;
 
 /// Meta data about objects on the surface
 #[derive(Debug, Clone, PartialEq, Hash)]
 pub struct Meta {
     /// The position within the surface
-    pub pos: Position
+    pub pos: Position,
+    pub postype: PositionType
 }
 
 impl Meta {
     pub fn new() -> Self
     {
         Self {
-            pos: (0, 0)
+            pos: (0, 0),
+            postype: PositionType::Abs
         }
     }
 }
