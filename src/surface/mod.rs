@@ -41,4 +41,10 @@ impl Surface {
     {
         self.objects.iter().for_each(f);
     }
+
+    pub fn for_each_mut<F>(&self, mut f: F)
+        where F: FnMut(&Object)
+    {
+        self.objects.iter().for_each(f);
+    }
 }
