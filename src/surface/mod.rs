@@ -147,4 +147,33 @@ impl Surface {
     {
         self.objects.iter().for_each(f);
     }
+
+    pub fn position(&mut self, pos: (isize, isize))
+    {
+        self.objects.iter_mut().for_each(|o| match o {
+            Object::Primitive(p) => p.position(pos),
+            _ => ()
+        });
+    }
+
+    pub fn translate(&mut self, pos: (isize, isize))
+    {
+        self.objects.iter_mut().for_each(|o| match o {
+            Object::Primitive(p) => p.translate(pos),
+            _ => ()
+        });
+    }
+
+    pub fn scale(&mut self, factor: f64)
+    {
+        self.objects.iter_mut().for_each(|o| match o {
+            Object::Primitive(p) => p.scale(factor),
+            _ => ()
+        });
+    }
+
+    pub fn append(&mut self, other: &mut Surface)
+    {
+        self.objects.append(&mut other.objects);
+    }
 }
