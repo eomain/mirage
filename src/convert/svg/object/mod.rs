@@ -19,7 +19,7 @@ fn line(l: &shape::Line) -> Line
 {
     line![
         (l.x1, l.y1),
-        (l.x2, l.y2)
+        (l.x2 - l.x1, l.y2 - l.y1)
     ]
 }
 

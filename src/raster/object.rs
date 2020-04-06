@@ -63,7 +63,7 @@ fn point_to_point(p1: (usize, usize), p2: (usize, usize)) -> Vec<(usize, usize)>
 fn line(l: &Line) -> Vec<(usize, usize)>
 {
     let mut v = Vec::new();
-    let points = l.points().unwrap();
+    let points = l.path();
     assert!(points.len() > 1);
     let mut p1 = point(&points[0]);
     for i in 1..points.len() {
