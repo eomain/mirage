@@ -2,13 +2,18 @@
 use super::Point;
 use super::Translate;
 
+/// Standard pixel size
+pub const SIZE: u32 = 10;
+
 /// A simple text object
 #[derive(Debug, Clone, PartialEq, Hash)]
 pub struct Text {
     /// Position of the text
     pub point: Point,
     /// The actual text string
-    pub text: String
+    pub text: String,
+    /// The font size,
+    pub size: u32
 }
 
 impl Text {
@@ -17,7 +22,8 @@ impl Text {
     {
         Self {
             point: point.into(),
-            text: text.into()
+            text: text.into(),
+            size: SIZE
         }
     }
 }

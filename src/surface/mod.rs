@@ -6,6 +6,7 @@
 
 use std::collections::HashMap;
 use crate::object::*;
+use crate::object::text;
 use crate::object::text::Text;
 
 /// A position on the surface
@@ -176,6 +177,42 @@ impl Surface {
     {
         self.objects.append(&mut other.objects);
     }
+
+    pub fn dimension(&self) -> (usize, usize)
+    {
+        let mut point: Point = (0, 0).into();
+        self.objects.iter().for_each(|o| match o {
+            Object::Primitive(p) => {
+                match p {
+                    Primitive::Point(p) => if p > &point {
+                        point = *p;
+                    },
+                    Primitive::Line(l) => {
+                         let max = l.path().iter().max().unwrap().clone();
+                         if max > point {
+                             point = max;
+                         }
+                     },
+                     Primitive::Rect(r) => {
+                         let p = r.point + (r.width as isize, r.height as isize).into();
+                         if p > point {
+                             point = p;
+                         }
+                     },
+                     Primitive::Text(t) => {
+                         let p = t.point +
+                            ((t.text.len() * t.size as usize) as isize,
+                              text::SIZE as isize).into();
+                         if p > point {
+                             point = p;
+                         }
+                     }
+                }
+            },
+            _ => ()
+        });
+        (point.x as usize, point.y as usize)
+    }
 }
 
 impl From<Vec<Object>> for Surface {
@@ -185,5 +222,23 @@ impl From<Vec<Object>> for Surface {
             meta: Meta::new(),
             objects
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use super::Object::Primitive;
+    use super::Primitive::*;
+
+    #[test]
+    fn surface_test()
+    {
+        let s = Surface::from(vec![
+            Primitive(Point((4, 6).into())),
+            Primitive(Text(text::Text::new((0, 2), "font")))
+        ]);
+
+        println!("{:?}", s.dimension());
     }
 }

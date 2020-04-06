@@ -112,7 +112,7 @@ pub trait Scale: Translate {
 
 /// A Point is a simple object that
 /// represents a single location
-#[derive(Debug, Copy, Clone, PartialEq, Hash)]
+#[derive(Debug, Copy, Clone, PartialEq, PartialOrd, Eq, Ord, Hash)]
 pub struct Point {
     /// The x coordinate
     pub x: isize,
@@ -331,7 +331,6 @@ mod tests {
     {
         let mut l = line![(2, 1), (1, 1), (5, 5)];
         l.position((3, 4));
-        //assert_eq!(l, line![(3, 4), (2, 4), (6, 8)]);
     }
 
     #[test]
