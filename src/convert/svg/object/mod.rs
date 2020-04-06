@@ -68,7 +68,7 @@ pub fn svg(s: &Svg) -> Surface
         );
     }
 
-    Surface::new(v)
+    Surface::from(v)
 }
 
 #[cfg(test)]

@@ -128,11 +128,11 @@ pub struct Surface {
 }
 
 impl Surface {
-    pub fn new(objects: Vec<Object>) -> Self
+    pub fn new() -> Self
     {
         Self {
             meta: Meta::new(),
-            objects
+            objects: Vec::new()
         }
     }
 
@@ -175,5 +175,15 @@ impl Surface {
     pub fn append(&mut self, other: &mut Surface)
     {
         self.objects.append(&mut other.objects);
+    }
+}
+
+impl From<Vec<Object>> for Surface {
+    fn from(objects: Vec<Object>) -> Self
+    {
+        Self {
+            meta: Meta::new(),
+            objects
+        }
     }
 }
