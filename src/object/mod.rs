@@ -220,15 +220,13 @@ impl From<&[Point]> for Line {
     }
 }
 
-impl<'a> IntoIterator for &'a Line {
-    type Item = &'a Point;
+impl IntoIterator for Line {
+    type Item = Point;
     type IntoIter = std::vec::IntoIter<Self::Item>;
 
     fn into_iter(self) -> Self::IntoIter
     {
-        self.path.iter()
-                   .collect::<Vec<_>>()
-                   .into_iter()
+        self.path().into_iter()
     }
 }
 
