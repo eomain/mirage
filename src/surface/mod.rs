@@ -189,23 +189,17 @@ impl Surface {
                     },
                     Primitive::Line(l) => {
                          let max = l.path().iter().max().unwrap().clone();
-                         if max > point {
-                             point = max;
-                         }
+                         point.set_max(&max);
                      },
                      Primitive::Rect(r) => {
                          let p = r.point + (r.width as isize, r.height as isize).into();
-                         if p > point {
-                             point = p;
-                         }
+                         point.set_max(&p);
                      },
                      Primitive::Text(t) => {
                          let p = t.point +
                             ((t.text.len() * t.size as usize) as isize,
                               text::SIZE as isize).into();
-                         if p > point {
-                             point = p;
-                         }
+                         point.set_max(&p);
                      }
                 }
             },

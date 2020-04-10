@@ -127,6 +127,17 @@ impl Point {
             x, y
         }
     }
+
+    pub(crate) fn set_max(&mut self, other: &Self)
+    {
+        if other.x > self.x {
+            self.x = other.x;
+        }
+
+        if other.y > self.y {
+            self.y = other.y;
+        };
+    }
 }
 
 impl Add for Point {
