@@ -2,6 +2,7 @@
 //! In mirage, all graphics are represented as
 //! a collection of Objects.
 
+pub mod bitmap;
 /// Contains objects for the creation
 /// of graphical text
 pub mod text;
