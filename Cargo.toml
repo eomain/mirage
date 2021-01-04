@@ -1,6 +1,6 @@
 [package]
 name = "mirage"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["eomain"]
 description = "A library for describing vector graphics"
 keywords = ["graphics", "vector", "render", "draw", "object", "shape", "svg"]

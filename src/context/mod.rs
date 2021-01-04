@@ -1,11 +1,12 @@
 
+use std::cell::RefCell;
 use std::path::{Path, PathBuf};
 use crate::object::{Point, Rect};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum ImageType {
     Path(PathBuf),
-    Data(Vec<u8>, ImageFormat)
+    Data(RefCell<Vec<u8>>, ImageFormat, u32, u32)
 }
 
 #[non_exhaustive]
@@ -70,6 +71,14 @@ impl Context {
     pub fn image<T, P>(&mut self, path: P, point: T)
         where T: Into<Point>, P: AsRef<Path> {
         self.commands.push(Command::Image(point.into(), ImageType::Path(path.as_ref().into())));
+    }
+
+    #[inline]
+    pub fn image_data<D, P>(&mut self, data: D, format: ImageFormat, point: P,
+        width: u32, height: u32)
+        where D: AsRef<[u8]>, P: Into<Point> {
+        let data = ImageType::Data(RefCell::new(data.as_ref().into()), format, width, height);
+        self.commands.push(Command::Image(point.into(), data));
     }
 
     #[inline]
@@ -146,6 +155,7 @@ mod tests {
         cx.stroke();
         cx.fill();
         cx.image("image.png", (0, 0));
+        cx.image_data(&[0x00, 0xFF], ImageFormat::Rgb8, (0, 0), 20, 20);
         cx.paint();
 
         for command in cx.commands() {
