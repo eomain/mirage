@@ -6,6 +6,7 @@
 
 #[macro_use]
 pub mod object;
+pub mod context;
 pub mod convert;
 pub mod raster;
 pub mod surface;
