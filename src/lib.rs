@@ -1,4 +1,3 @@
-//! # Mirage
 //! Mirage is a library for describing vector graphics.
 //! Rather than actually rendering the graphics itself,
 //! it is intended to provide a usable definition that can be used
@@ -8,5 +7,6 @@
 pub mod object;
 pub mod context;
 pub mod convert;
+#[cfg(feature = "raster")]
 pub mod raster;
 pub mod surface;

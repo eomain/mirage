@@ -1,21 +1,9 @@
 
-extern crate serde;
-extern crate serde_xml_rs as serde_xml;
-
 pub mod shape;
 
 use shape::Shape;
-
-use serde::{
-    Serialize,
-    Deserialize
-};
-
-use serde_xml_rs::{
-    from_str,
-    from_reader,
-    to_string
-};
+use serde::{Serialize, Deserialize};
+use serde_xml_rs::{from_str, from_reader, to_string};
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename = "svg")]

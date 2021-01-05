@@ -1,6 +1,4 @@
-//! # Surface
-//! A surface contains a set of object
-//! that are intented to be displayed.
+//! A surface contains a set of object that are intented to be displayed.
 
 #[allow(unused_imports)]
 

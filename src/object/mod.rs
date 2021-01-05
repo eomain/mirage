@@ -1,6 +1,4 @@
-//! # Objects
-//! In mirage, all graphics are represented as
-//! a collection of Objects.
+//! Vector graphics type primitives
 
 pub mod bitmap;
 /// Contains objects for the creation

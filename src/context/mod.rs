@@ -1,3 +1,20 @@
+//! Context for drawing vector graphics
+//!
+//! # Example usage
+//! Use of context for simple drawing
+//!
+//! ```
+//! use mirage::context::Context;
+//!
+//! // Create new context
+//! let mut cx = Context::new();
+//! // Set the color to `red`
+//! cx.rgb(1.0, 0.0, 0.0);
+//! // Draw rectangle
+//! cx.rect((5, 5), 40, 25);
+//! // Fill
+//! cx.fill();
+//! ```
 
 use std::cell::RefCell;
 use std::path::{Path, PathBuf};
@@ -15,6 +32,7 @@ pub enum ImageFormat {
     Rgb8
 }
 
+/// Drawing command operations
 #[non_exhaustive]
 #[derive(Debug, Clone, PartialEq)]
 pub enum Command {
@@ -35,6 +53,7 @@ pub enum Command {
     Paint
 }
 
+/// Context used for drawing operations
 #[derive(Debug, Clone, PartialEq)]
 pub struct Context {
     commands: Vec<Command>
@@ -155,7 +174,7 @@ mod tests {
         cx.stroke();
         cx.fill();
         cx.image("image.png", (0, 0));
-        cx.image_data(&[0x00, 0xFF], ImageFormat::Rgb8, (0, 0), 20, 20);
+        cx.image_data(&[0x00, 0xFF, 0x55, 0x00], ImageFormat::Rgb8, (0, 0), 20, 20);
         cx.paint();
 
         for command in cx.commands() {
