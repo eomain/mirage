@@ -29,7 +29,14 @@ pub enum ImageType {
 #[non_exhaustive]
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub enum ImageFormat {
-    Rgb8
+    /// Pixel is 24-bits, 8-bits per component
+    Rgb8,
+    /// Pixel is 32-bits, 8-bits per component
+    Rgba8,
+    /// Pixel is 24-bit, 8-bits per component
+    Bgr8,
+    /// Pixel is 32-bits, 8-bits per component
+    Bgra8
 }
 
 /// Drawing command operations
@@ -42,9 +49,13 @@ pub enum Command {
     Image(Point, ImageType),
     FontSize(f64),
     Move(Point),
+    RelMove(Point),
     Line(Point),
     RelLine(Point),
     Rect(Rect),
+    RelRect(u32, u32),
+    Arc(Point, u32, f64, f64),
+    Curve(Point, Point, Point),
     Scale(f64, f64),
     Rotate(f64),
     Translate(f64, f64),
@@ -112,6 +123,12 @@ impl Context {
     }
 
     #[inline]
+    pub fn rel_move_to<P>(&mut self, point: P)
+        where P: Into<Point> {
+        self.commands.push(Command::RelMove(point.into()));
+    }
+
+    #[inline]
     pub fn line_to<P>(&mut self, point: P)
         where P: Into<Point> {
         self.commands.push(Command::Line(point.into()));
@@ -128,6 +145,23 @@ impl Context {
         where P: Into<Point> {
         let rect = Rect::new(point, width, height);
         self.commands.push(Command::Rect(rect));
+    }
+
+    #[inline]
+    pub fn rel_rect(&mut self, width: u32, height: u32) {
+        self.commands.push(Command::RelRect(width, height));
+    }
+
+    #[inline]
+    pub fn arc<P>(&mut self, point: P, radius: u32, angle1: f64, angle2: f64)
+        where P: Into<Point> {
+        self.commands.push(Command::Arc(point.into(), radius, angle1, angle2));
+    }
+
+    #[inline]
+    pub fn curve_to<P>(&mut self, p1: P, p2: P, p3: P)
+        where P: Into<Point> {
+        self.commands.push(Command::Curve(p1.into(), p2.into(), p3.into()));
     }
 
     #[inline]
@@ -174,7 +208,7 @@ mod tests {
         cx.stroke();
         cx.fill();
         cx.image("image.png", (0, 0));
-        cx.image_data(&[0x00, 0xFF, 0x55, 0x00], ImageFormat::Rgb8, (0, 0), 20, 20);
+        cx.image_data(&[0x00, 0xFF, 0x55, 0x00], ImageFormat::Rgba8, (0, 0), 20, 20);
         cx.paint();
 
         for command in cx.commands() {
